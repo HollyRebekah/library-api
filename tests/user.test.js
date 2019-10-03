@@ -9,7 +9,7 @@ describe('Users', () => {
   });
 
   describe('POST /users', () => {
-    it('creates a new user in the database', (done) => {
+    it('creates a new user in the database and encrypts the password', (done) => {
       chai.request(server)
         .post('/users')
         .send({
@@ -27,7 +27,9 @@ describe('Users', () => {
             expect(user.firstName).to.equal('Holly');
             expect(user.lastName).to.equal('Fanthorpe');
             expect(user.email).to.equal('hollyfanthorpe@gmail.com');
-            expect(user.password).to.equal('password123');
+            expect(user.password).not.equal('password123');
+            expect(user.password).to.have.lengthOf(60);
+            expect(res.body).not.to.have.property('password');
             done();
           });
         });
