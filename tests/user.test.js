@@ -34,5 +34,26 @@ describe('Users', () => {
           });
         });
     });
+
+    it('checks for a valid email address', (done) => {
+      chai.request(server)
+        .post('/users')
+        .send({
+          firstName: 'Holly',
+          lastName: 'Fanthorpe',
+          email: 'hollyfanthorpe',
+          password: 'password123',
+        })
+        .end((err, res) => {
+          expect(err).to.equal(null);
+          expect(res.status).to.equal(400);
+          expect(res.body.errors.email).to.equal('Invalid email address');
+          
+          User.countDocuments({}, (error, users) => {
+            expect(users).to.have.lengthOf(0);
+            done();
+          });
+        });
+    });
   });
 });
