@@ -3,7 +3,10 @@ const bcrypt = require('bcrypt');
 const isEmail = require('isemail');
 
 const userSchema = new mongoose.Schema({
-  password: String,
+  password: {
+    type: String,
+    minlength: [8, 'Password must be at least 8 characters'],
+  },
   firstName: String,
   lastName: String,
   email: {
