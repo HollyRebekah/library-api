@@ -48,7 +48,28 @@ describe('Users', () => {
           expect(err).to.equal(null);
           expect(res.status).to.equal(400);
           expect(res.body.errors.email).to.equal('Invalid email address');
-          
+
+          User.countDocuments({}, (error, count) => {
+            expect(count).to.equal(0);
+            done();
+          });
+        });
+    });
+
+    it('checks for a valid password', (done) => {
+      chai.request(server)
+        .post('/users')
+        .send({
+          firstName: 'Holly',
+          lastName: 'Fanthorpe',
+          email: 'hollyfanthorpe',
+          password: 'p',
+        })
+        .end((err, res) => {
+          expect(err).to.equal(null);
+          expect(res.status).to.equal(400);
+          expect(res.body.errors.password).to.equal('Password must be at least 8 characters');
+
           User.countDocuments({}, (error, count) => {
             expect(count).to.equal(0);
             done();
