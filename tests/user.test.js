@@ -49,8 +49,8 @@ describe('Users', () => {
           expect(res.status).to.equal(400);
           expect(res.body.errors.email).to.equal('Invalid email address');
           
-          User.countDocuments({}, (error, users) => {
-            expect(users).to.have.lengthOf(0);
+          User.countDocuments({}, (error, count) => {
+            expect(count).to.equal(0);
             done();
           });
         });

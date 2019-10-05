@@ -1,11 +1,15 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const isEmail = require('isemail');
 
 const userSchema = new mongoose.Schema({
   password: String,
   firstName: String,
   lastName: String,
-  email: String,
+  email: {
+    type: String,
+    validate: [isEmail.validate, 'Invalid email address'],
+  },
 });
 
 userSchema.pre('save', function encryptPassword(next) {
@@ -23,7 +27,7 @@ userSchema.pre('save', function encryptPassword(next) {
   }
 });
 
-userSchema.methods.sanitise = function() {
+userSchema.methods.sanitise = function () {
   const userObject = this.toObject();
   const { password, ...rest } = userObject;
   return rest;
