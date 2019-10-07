@@ -11,7 +11,7 @@ describe('Users', () => {
 
   describe('POST /users', () => {
     const userInfo = DataFactory.user();
-    it('creates a new user in the database and encrypts the password', (done) => {
+    xit('creates a new user in the database and encrypts the password', (done) => {
       chai.request(server)
         .post('/users')
         .send(userInfo)
@@ -32,7 +32,7 @@ describe('Users', () => {
         });
     });
 
-    it('checks for a valid email address', (done) => {
+    xit('checks for a valid email address', (done) => {
       const userInfoWrongEmail = DataFactory.user({ email: 'email' });
       chai.request(server)
         .post('/users')
@@ -49,7 +49,7 @@ describe('Users', () => {
         });
     });
 
-    it('checks for a valid password', (done) => {
+    xit('checks for a valid password', (done) => {
       const userInfoWrongPassword = DataFactory.user({ password: 'p' });
       chai.request(server)
         .post('/users')
