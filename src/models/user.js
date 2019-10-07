@@ -30,10 +30,14 @@ userSchema.pre('save', function encryptPassword(next) {
   }
 });
 
-userSchema.methods.sanitise = function () {
+userSchema.methods.sanitise = function sanitise() {
   const userObject = this.toObject();
   const { password, ...rest } = userObject;
   return rest;
+};
+
+userSchema.methods.validatePassword = function validatePassword(guess) {
+  return bcrypt.compareSync(guess, this.password);
 };
 
 const User = mongoose.model('User', userSchema);
