@@ -4,14 +4,18 @@ const jwt = require('jsonwebtoken');
 exports.login = (req, res) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
-      const payload = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        id: user._id,
-      };
+      if (user === null) {
+        res.sendStatus(401);
+      } else {
+        const payload = {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          id: user._id,
+        };
 
-      jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1w' }, (err, token) => {
-        res.status(200).json({ authorise: token });
-      });
+        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1w' }, (err, token) => {
+          res.status(200).json({ authorise: token });
+        });
+      }
     });
 };

@@ -31,4 +31,16 @@ describe('authorisation', () => {
         done();
       });
   });
+
+  it('doesn\'t allow login with an inccorect email', (done) => {
+    chai.request(server)
+      .post('/auth/login')
+      .send({ email: 'email@incorrect.com' })
+      .end((err, res) => {
+        expect(err).to.equal(null);
+        expect(res.status).to.equal(401);
+        expect(res.body).not.to.have.property('authorise');
+        done();
+      });
+  });
 });
