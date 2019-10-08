@@ -18,7 +18,6 @@ exports.create = (req, res) => {
           .where('isbn').equals(req.body.isbn)
           .populate({ path: 'user' })
           .exec((err, book) => {
-            console.log(err);
             res.status(201).json(book);
           });
       });
