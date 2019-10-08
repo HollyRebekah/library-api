@@ -1,19 +1,30 @@
 const User = require('../src/models/user');
+const Book = require('../src/models/book');
 const chai = require('chai');
 const DataFactory = require('./helpers/data-factory');
 
 describe('/books', () => {
   let userInfo;
+  let bookInfo;
+  let userId;
   beforeEach((done) => {
     userInfo = DataFactory.user();
     chai.request(server)
       .post('/users')
       .send(userInfo)
-      .end(() => {
+      .end((err, res) => {
+        userId = res.body._id;
         done();
       });
   });
   it('creates a new book listing', (done) => {
+    bookInfo = {
+      title: 'The Martian',
+      author: 'Andy Weir',
+      genre: 'Science Fiction',
+      isbn: '978-0-8041-3902-1',
+      user: userId,
+    };
     chai.request(server)
       .post('/books')
       .send(bookInfo)
