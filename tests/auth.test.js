@@ -2,16 +2,14 @@ const DataFactory = require('./helpers/data-factory');
 const chai = require('chai');
 const jwt = require('jsonwebtoken');
 
-describe('authorisation', () => {
+describe('/auth', () => {
   let userInfo;
   beforeEach((done) => {
     userInfo = DataFactory.user();
     chai.request(server)
       .post('/users')
       .send(userInfo)
-      .end((err, res) => {
-        expect(err).to.equal(null);
-        expect(res.status).to.equal(201);
+      .end(() => {
         done();
       });
   });
