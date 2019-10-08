@@ -16,6 +16,13 @@ describe('/books', () => {
         done();
       });
   });
+
+  afterEach((done) => {
+    Book.deleteMany({}, () => {
+      done();
+    });
+  });
+
   it('creates a new book listing', (done) => {
     bookInfo = {
       title: 'The Martian',
@@ -37,6 +44,23 @@ describe('/books', () => {
           expect(book).to.have.property('author');
           expect(book).to.have.property('genre');
           expect(book).to.have.property('isbn');
+          done();
+        });
+      });
+  });
+
+  it('will not create a new book listing if title field is missing', (done) => {
+    const { title, ... rest } = bookInfo;
+    chai.request(server)
+      .post('/books')
+      .send(rest)
+      .end((err, res) => {
+        expect(err).to.equal(null);
+        expect(res.status).to.equal(400);
+        expect(res.body.error).to.equal('All book listings must contain a title and author');
+        Book.find({}, (error, books) => {
+          expect(error).to.equal(null);
+          expect(books).to.have.lengthOf(0);
           done();
         });
       });
