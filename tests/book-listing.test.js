@@ -1,4 +1,3 @@
-const User = require('../src/models/user');
 const Book = require('../src/models/book');
 const chai = require('chai');
 const DataFactory = require('./helpers/data-factory');

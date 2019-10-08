@@ -1,15 +1,21 @@
 const Book = require('../models/book');
 
 exports.create = (req, res) => {
-  const book = new Book({
+  const newBook = new Book({
     title: req.body.title,
     author: req.body.author,
     genre: req.body.genre,
     isbn: req.body.isbn,
     user: req.body.user,
   });
-  book.save()
+  newBook.save()
     .then(() => {
-      res.status(201).json(book);
+      Book.findOne()
+        .where('isbn').equals(req.body.isbn)
+        .populate({ path: 'user' })
+        .exec((err, book) => {
+            console.log(err);
+          res.status(201).json(book);
+        });
     });
 };
